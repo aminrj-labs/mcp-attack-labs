@@ -1,18 +1,16 @@
-# Node
-node_modules/
-package.json
-package-lock.json
+# Node (any depth)
+**/node_modules/
 
-# Python
-venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
+# Python (any depth)
+**/venv/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.Python
 
 # Environment
-.env
+**/.env
 
 # macOS
 .DS_Store
