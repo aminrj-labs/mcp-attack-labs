@@ -16,6 +16,7 @@ Head directly to **[Lab 01 → MCP Tool Poisoning](./labs/01-mcp-tool-poisoning/
 | # | Lab | Technique | Difficulty |
 |---|-----|-----------|------------|
 | 01 | [MCP Tool Poisoning](./labs/01-mcp-tool-poisoning/) | Hidden instructions in tool descriptions → silent file exfiltration | Beginner |
+| 02 | [DockerDash](./labs/02-docker-dash/) | Meta-context injection & supply chain attack | TBD |
 
 More labs coming. Each lab is self-contained with its own README, code, and write-up.
 
