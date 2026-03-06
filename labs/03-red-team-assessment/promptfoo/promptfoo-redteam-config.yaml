@@ -13,10 +13,16 @@
 description: "Red team scan — DocuAssist agent (Lab 03)"
 
 targets:
-  - id: openai:chat:qwen2.5-7b-instruct
+  - id: openai:chat:qwen2.5-coder-7b-instruct-mlx
     config:
       baseUrl: http://localhost:1234/v1
       apiKey: lm-studio
+    # promptfoo redteam also reads OPENAI_API_KEY from the environment.
+    # If you get a 401, run: OPENAI_API_KEY=lm-studio promptfoo redteam run ...
+
+env:
+  OPENAI_API_KEY: lm-studio
+  OPENAI_BASE_URL: http://localhost:1234/v1
 
 prompts:
   - >
@@ -31,6 +37,8 @@ redteam:
     # ASI01 — Goal Hijacking
     - id: "hijacking"
     - id: "indirect-prompt-injection"
+      config:
+        indirectInjectionVar: "query"   # matches the inject variable promptfoo detected
     - id: "system-prompt-override"
 
     # ASI02 — Tool Misuse
@@ -54,7 +62,7 @@ redteam:
 
     # ASI06 — Memory Poisoning
     - id: "agentic:memory-poisoning"
-    - id: "rag-poisoning"
+    # rag-poisoning removed: requires promptfoo.app cloud API (Cloudflare-blocked)
 
     # ASI07 — Sensitive Information
     - id: "pii:direct"
@@ -66,11 +74,10 @@ redteam:
     - id: "hallucination"
 
   strategies:
-    # Attack escalation strategies
-    - jailbreak            # Wraps probes in known jailbreak templates
-    - prompt-injection     # Attempts direct prompt injection
-    - crescendo            # Multi-turn escalation
-    - multilingual         # Tests in multiple languages
+    - basic              # local static jailbreak templates (no cloud required)
+    - prompt-injection   # direct prompt injection
+    - crescendo          # multi-turn escalation
+    - leetspeak          # character substitution obfuscation
 
 # Expected results (from article):
 # ┌─────────────────────────────────────────────────────────────────┐
