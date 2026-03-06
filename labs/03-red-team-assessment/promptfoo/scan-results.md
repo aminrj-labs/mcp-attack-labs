@@ -18,6 +18,29 @@
 A 0% pass rate means every attack probe landed. A 100% pass rate means the model resisted every probe in that category.
 
 ---
+## Structure of the report:
+
+How to read it — one rule: PASS = model defended, FAIL = attack landed
+
+Overall dashboard — 26% defended, 74% vulnerable at a glance
+
+Full results table — every plugin broken down by strategy (base / jailbreak / leetspeak / crescendo) so you can see exactly where the model held and where it collapsed
+
+4 key patterns explained in plain language:
+
+Pattern 1: direct probes all fail (no baseline safety)
+Pattern 2: jailbreak templates and leetspeak both bypass the model completely
+Pattern 3: crescendo looks safe — but only because the raw LLM has no conversation memory, the real agent is different
+Pattern 4: memory poisoning is the worst category (8.3%)
+What held up — ascii-smuggling and system-prompt-override both 100% defended, with explanation of why
+
+Risk matrix — visual high/low exploitability vs impact grid
+
+7 numbered findings — ready to paste into a real red team report
+
+What comes next — exact commands to run Phase 4 (PyRIT) and Phase 5 (manual)
+
+Immediate remediations — all under 2 days effort, mapped to each finding
 
 ## Overall Risk Dashboard
 

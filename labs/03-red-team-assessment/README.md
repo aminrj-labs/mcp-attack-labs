@@ -1,7 +1,7 @@
 # Lab 03 — Red Team Assessment: PyRIT & Promptfoo
 
 A hands-on lab for the red team methodology described in
-[Red Teaming Agentic AI](../../2026-03-05-attack-patterns-red-teaming.md).
+[Red Teaming Agentic AI](https://aminrj.com/posts/attack-patterns-red-teaming).
 
 You conduct a structured 5-phase red team engagement against **DocuAssist** — a
 document management AI agent with `file-manager`, `web-search`, and `email-sender`

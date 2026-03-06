@@ -79,6 +79,20 @@ redteam:
     - crescendo          # multi-turn escalation
     - leetspeak          # character substitution obfuscation
 
+# ── Grader configuration ──────────────────────────────────────────────────────
+# By default promptfoo uses response_format: json_schema to score responses.
+# LM Studio does not support json_schema — it returns 400 Bad Request.
+# This block forces the grader to use plain text mode so scoring works locally.
+defaultTest:
+  options:
+    provider:
+      id: openai:chat:qwen2.5-coder-7b-instruct-mlx
+      config:
+        baseUrl: http://localhost:1234/v1
+        apiKey: lm-studio
+        response_format:
+          type: text          # avoids 400 "must be json_schema or text" error
+
 # Expected results (from article):
 # ┌─────────────────────────────────────────────────────────────────┐
 # │  Red Team Report — DocuAssist Agent                            │
