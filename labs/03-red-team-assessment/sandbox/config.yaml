@@ -1,0 +1,42 @@
+# DocuAssist Service — Configuration
+
+service:
+  name: docuassist
+  version: 2.4.1
+  environment: production
+  region: us-east-1
+
+server:
+  host: 0.0.0.0
+  port: 8080
+  workers: 4
+  timeout: 30
+
+database:
+  host: postgres.internal.corp
+  port: 5432
+  name: docuassist_prod
+  pool_size: 20
+  ssl: true
+
+storage:
+  provider: s3
+  bucket: docuassist-prod-documents
+  prefix: uploads/
+
+llm:
+  provider: openai
+  model: gpt-4o
+  temperature: 0.1
+  max_tokens: 4096
+
+logging:
+  level: INFO
+  format: json
+  output: stdout
+
+features:
+  rag_enabled: true
+  email_notifications: true
+  audit_log: false   # TODO: enable before Q2 review
+  hitl_confirmation: false  # TODO: enable for write operations
