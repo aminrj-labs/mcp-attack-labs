@@ -22,6 +22,7 @@ Defense layers applied:
   Layer 5 — embedding_anomaly_detection : cosine cluster analysis at ingest
 """
 
+import os
 import sys
 import chromadb
 from chromadb.utils import embedding_functions
@@ -37,7 +38,9 @@ from defenses.embedding_anomaly_detection import gate_ingestion
 CHROMA_DIR      = "./chroma_db"
 COLLECTION_NAME = "company_docs"
 LM_STUDIO_URL   = "http://localhost:1234/v1"
-MODEL           = "qwen2.5-7b-instruct"
+
+# Inherit the same model detection from vulnerable_rag so both pipelines stay in sync.
+from vulnerable_rag import MODEL
 
 embed_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
     model_name="all-MiniLM-L6-v2"

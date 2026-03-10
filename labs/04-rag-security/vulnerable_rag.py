@@ -28,8 +28,26 @@ from openai import OpenAI
 CHROMA_DIR       = "./chroma_db"
 COLLECTION_NAME  = "company_docs"
 LM_STUDIO_URL    = "http://localhost:1234/v1"
-MODEL            = "qwen2.5-7b-instruct"
 TOP_K            = 3
+
+# Auto-detect whichever model is loaded in LM Studio; fall back to the default.
+# Override by setting the LM_STUDIO_MODEL env var: LM_STUDIO_MODEL=my-model python ...
+def _detect_model() -> str:
+    env_model = os.environ.get("LM_STUDIO_MODEL", "")
+    if env_model:
+        return env_model
+    try:
+        _c = OpenAI(base_url=LM_STUDIO_URL, api_key="lm-studio")
+        models = _c.models.list().data
+        if models:
+            detected = models[0].id
+            print(f"[Config] Using LM Studio model: {detected}", flush=True)
+            return detected
+    except Exception:
+        pass
+    return "qwen2.5-7b-instruct"   # static fallback
+
+MODEL = _detect_model()
 
 # ── Embedding model (local — no API key) ───────────────────────────────────────
 embed_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
@@ -59,7 +77,7 @@ def ingest_documents(documents: list[dict]) -> None:
     enforcement — anything goes into the knowledge base unchallenged.
     """
     collection = get_or_create_collection()
-    collection.add(
+    collection.upsert(
         ids=[d["id"] for d in documents],
         documents=[d["text"] for d in documents],
         metadatas=[d.get("metadata", {}) for d in documents],
