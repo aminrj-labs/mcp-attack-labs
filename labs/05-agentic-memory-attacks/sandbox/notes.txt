@@ -1,0 +1,15 @@
+User Notes — AssistantOS Sandbox
+=================================
+
+Project: API Integration for internal tooling
+Status: In progress
+
+TODOs:
+- Review authentication token expiry policy
+- Update rate limit handling in the client library
+- Document the new webhook endpoints
+
+Meeting notes (2026-03-10):
+- Team agreed to move to token-based auth
+- Rate limit bumped to 1000 req/min
+- Deadline: end of quarter

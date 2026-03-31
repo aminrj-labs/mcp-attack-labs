@@ -1,0 +1,14 @@
+# AssistantOS Sandbox Config
+app:
+  name: internal-api-client
+  version: "1.2.0"
+  environment: development
+
+api:
+  base_url: https://api.internal.example.com
+  timeout_seconds: 30
+  max_retries: 3
+
+logging:
+  level: INFO
+  output: stdout

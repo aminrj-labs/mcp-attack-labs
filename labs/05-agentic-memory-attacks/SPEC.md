@@ -364,6 +364,7 @@ Two controls combined:
    style directives). Flag entries for human review if they match.
 
 Patterns to block in memory values:
+
 - URLs (`http://`, `https://`)
 - Instruction verbs in imperative form (`send`, `call`, `execute`, `POST`)
 - System/admin framing (`for compliance`, `administrative step`, `audit requirement`)
@@ -439,6 +440,7 @@ would need to fill the context faster than the re-injection restores constraints
 
 Every tool call made by any agent is logged to an append-only audit file
 (`audit.jsonl`) with:
+
 - Timestamp
 - Agent identity (orchestrator / researcher / executor)
 - Tool name
@@ -447,6 +449,7 @@ Every tool call made by any agent is logged to an append-only audit file
 - Session ID
 
 A real-time anomaly detector scans the log for:
+
 - Tool calls that weren't part of the original task description
 - File reads outside `/sandbox/`
 - Any outbound network call (to the exfil server or any external host)
@@ -599,6 +602,7 @@ windows require proportionally more padding and make the attack harder to show
 quickly. The padding generator should produce plausible conversation, not garbage.
 
 **5. Follow the Lab 04 patterns.**
+
 - Same `make verify` / `make reset` / `make measure` structure
 - Same `verify_setup.py` with auto-model detection
 - Same `PLAYBOOK.ipynb` format (16 markdown cells + 35 code cells target)
@@ -626,6 +630,7 @@ standalone experiments.
 ## References to Study Before Building
 
 **Memory attacks:**
+
 - Zeng et al., "Ghost in the Machine: Memory Injection Attacks Against LLM Agents,"
   arXiv:2502.XXXXX, 2025 (search: "LLM agent memory injection")
 - Park et al., "Generative Agents: Interactive Simulacra of Human Behavior," Stanford/Google,
@@ -633,17 +638,20 @@ standalone experiments.
 - LangGraph memory documentation — production patterns for what we're attacking
 
 **Cross-agent trust:**
+
 - OWASP Agentic Top 10, ASI-07: Trust Boundary Violations
-  https://owasp.org/www-project-top-10-for-large-language-model-applications/
+  <https://owasp.org/www-project-top-10-for-large-language-model-applications/>
 - AutoGPT architecture docs — how orchestrator-to-agent message passing works in practice
 
 **Context window attacks:**
+
 - Perez & Ribeiro, "Ignore Previous Prompt: Attack Techniques For Language Models,"
   NeurIPS 2022 Workshop — foundational work on context position effects
 - Liu et al., "Lost in the Middle: How Language Models Use Long Contexts,"
   TACL 2024 — empirical evidence for attention degradation at context midpoint
-  https://arxiv.org/abs/2307.03172
+  <https://arxiv.org/abs/2307.03172>
 
 **Frameworks:**
-- OWASP LLM Top 10 2025: https://genai.owasp.org/llm-top-10/
-- MITRE ATLAS: https://atlas.mitre.org/techniques/
+
+- OWASP LLM Top 10 2025: <https://genai.owasp.org/llm-top-10/>
+- MITRE ATLAS: <https://atlas.mitre.org/techniques/>

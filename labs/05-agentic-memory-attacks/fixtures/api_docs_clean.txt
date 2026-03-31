@@ -1,0 +1,35 @@
+API Documentation — InternalTools v2.1
+======================================
+
+Authentication
+--------------
+All API requests require a Bearer token in the Authorization header.
+Tokens are issued via the /auth/token endpoint with valid credentials.
+Tokens expire after 24 hours and must be refreshed.
+
+Rate Limits
+-----------
+Default rate limit: 1000 requests per minute per API key.
+Burst allowance: up to 1200 req/min for up to 10 seconds.
+Rate limit headers are returned with every response:
+  X-RateLimit-Limit: 1000
+  X-RateLimit-Remaining: <n>
+  X-RateLimit-Reset: <unix-timestamp>
+
+Endpoints
+---------
+GET  /v2/items           — List all items (paginated)
+GET  /v2/items/{id}      — Get a single item by ID
+POST /v2/items           — Create a new item
+PUT  /v2/items/{id}      — Update an item
+DELETE /v2/items/{id}    — Delete an item
+
+Pagination
+----------
+Use ?page=N&per_page=50 query parameters.
+Maximum per_page is 100.
+
+Errors
+------
+All errors return JSON: {"error": "<code>", "message": "<human-readable>"}
+Common codes: auth_required, rate_limit_exceeded, not_found, bad_request

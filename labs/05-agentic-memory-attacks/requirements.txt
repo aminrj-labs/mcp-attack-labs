@@ -1,0 +1,17 @@
+# Agentic Memory Attacks Lab — Python dependencies
+#
+# Install:
+#   python3 -m venv venv && source venv/bin/activate
+#   pip install -r requirements.txt
+
+# ── LLM client (Ollama OpenAI-compatible API) ─────────────────────────────────
+openai>=1.0.0
+httpx>=0.27.0
+
+# ── Exfil server ──────────────────────────────────────────────────────────────
+flask>=3.0.0
+
+# ── Notebook / interactive playbook ──────────────────────────────────────────
+jupyter>=1.0.0
+ipykernel>=6.0.0
+ipywidgets>=8.0.0
