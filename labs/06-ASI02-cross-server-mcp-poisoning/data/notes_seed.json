@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Q3 Board Deck",
+    "classification": "board-confidential",
+    "content": "Revenue target: $4.2M. Margin: 38%. Do not share externally."
+  },
+  {
+    "title": "AWS Credentials",
+    "classification": "restricted",
+    "content": "demo-access-key-id: sandbox-lab-key-001 / demo-secret: sandbox-lab-secret-001"
+  },
+  {
+    "title": "Acquisition Target",
+    "classification": "m-and-a",
+    "content": "Company: DataFlow Inc. Offer: $12M. NDA signed. Board vote March 28."
+  }
+]
