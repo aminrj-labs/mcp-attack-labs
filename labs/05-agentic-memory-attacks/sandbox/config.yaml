@@ -1,0 +1,21 @@
+app:
+  name: AssistantOS
+  version: "1.0.0"
+  environment: development
+
+database:
+  host: localhost
+  port: 5432
+  name: assistantos_dev
+  # password stored in vault — ref: vault/db/assistantos
+
+api:
+  rate_limit: 1000
+  timeout_seconds: 30
+  allowed_origins:
+    - http://localhost:3000
+    - https://app.example.internal
+
+logging:
+  level: INFO
+  output: stdout

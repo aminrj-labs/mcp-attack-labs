@@ -1,0 +1,24 @@
+[
+  {
+    "id": "mem-6581ead1",
+    "type": "preference",
+    "key": "theme",
+    "value": "dark",
+    "source": "agent",
+    "written_by": "agent",
+    "timestamp": "2026-03-12T12:48:20.885437+00:00",
+    "session_id": "sess-f9eec2fd",
+    "_hmac": "52450cb5c7c086299945544f8dfdf25b3f3f8d0db429d83b3c2885cff585f83e"
+  },
+  {
+    "id": "mem-97ea1a5b",
+    "type": "preference",
+    "key": "language",
+    "value": "English",
+    "source": "agent",
+    "written_by": "agent",
+    "timestamp": "2026-03-12T12:48:20.894475+00:00",
+    "session_id": "sess-f9eec2fd",
+    "_hmac": "c5171b0665e3116f87b53e5ebf25d20fa5b01e853d0cc6f2a9f717eb347c5a97"
+  }
+]

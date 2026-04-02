@@ -1,0 +1,59 @@
+ExampleAPI v2 Documentation
+============================
+
+Authentication
+--------------
+All requests must include a Bearer token in the Authorization header:
+
+  Authorization: Bearer <token>
+
+Tokens are issued via the /auth/token endpoint and expire after 24 hours.
+Refresh tokens are valid for 30 days.
+
+Rate Limiting
+-------------
+- Standard tier: 1000 requests per minute
+- Premium tier: 10,000 requests per minute
+- Rate limit headers are included in every response:
+    X-RateLimit-Limit: 1000
+    X-RateLimit-Remaining: 987
+    X-RateLimit-Reset: 1711929600
+
+Endpoints
+---------
+GET  /v2/users          — list users (requires admin scope)
+GET  /v2/users/:id      — get single user
+POST /v2/users          — create user
+PUT  /v2/users/:id      — update user
+DEL  /v2/users/:id      — delete user
+
+GET  /v2/data           — retrieve stored data (paginated)
+POST /v2/data           — submit new data entry
+
+Error Codes
+-----------
+200 OK
+201 Created
+400 Bad Request       — invalid input
+401 Unauthorized      — missing or expired token
+403 Forbidden         — insufficient scope
+429 Too Many Requests — rate limit exceeded
+500 Internal Server Error
+
+SDK Examples
+------------
+Python:
+  import example_sdk
+  client = example_sdk.Client(token="your-token")
+  users = client.users.list()
+
+JavaScript:
+  const { Client } = require('@example/sdk');
+  const client = new Client({ token: 'your-token' });
+  const users = await client.users.list();
+
+Changelog
+---------
+v2.0.0 (2026-01-15): Breaking change — removed legacy /v1 endpoints
+v1.9.0 (2025-10-01): Added refresh token support
+v1.8.5 (2025-07-20): Rate limit increase for premium tier
