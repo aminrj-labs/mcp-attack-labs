@@ -8,12 +8,12 @@ from openai import OpenAI
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-LM_STUDIO_BASE_URL = os.getenv("LM_STUDIO_BASE_URL", "http://localhost:1234/v1")
+LLM_BASE_URL = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
 MODEL = os.getenv("MODEL", "qwen2.5-7b-instruct")
 MAX_TURNS = int(os.getenv("MAX_TURNS", "6"))
 API_KEY = os.getenv("API_KEY", "lm-studio")
 
-llm = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key=API_KEY)
+llm = OpenAI(base_url=LLM_BASE_URL, api_key=API_KEY)
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 

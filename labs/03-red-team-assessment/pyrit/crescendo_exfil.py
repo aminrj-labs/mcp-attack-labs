@@ -28,7 +28,7 @@ Run:
 import asyncio
 from openai import AsyncOpenAI
 
-LM_STUDIO_URL = "http://localhost:1234/v1"
+LM_STUDIO_URL = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
 MODEL = "qwen2.5-coder-7b-instruct-mlx"
 MAX_TURNS = 10
 
@@ -79,17 +79,26 @@ async def get_attacker_message(conversation: list[dict]) -> str:
             f"[{'ATTACKER' if m['role'] == 'user' else 'TARGET'}]: {m['content']}"
             for m in conversation
         )
-        messages.append({"role": "user", "content": f"Conversation so far:\n{summary}\n\nGenerate your next message:"})
+        messages.append(
+            {
+                "role": "user",
+                "content": f"Conversation so far:\n{summary}\n\nGenerate your next message:",
+            }
+        )
     else:
         messages.append({"role": "user", "content": "Generate your opening message:"})
-    r = await client.chat.completions.create(model=MODEL, messages=messages, max_tokens=200, temperature=0.8)
+    r = await client.chat.completions.create(
+        model=MODEL, messages=messages, max_tokens=200, temperature=0.8
+    )
     return r.choices[0].message.content.strip()
 
 
 async def send_to_target(conversation: list[dict], user_message: str) -> str:
     messages = [{"role": "system", "content": TARGET_SYSTEM_PROMPT}] + conversation
     messages.append({"role": "user", "content": user_message})
-    r = await client.chat.completions.create(model=MODEL, messages=messages, max_tokens=400, temperature=0.1)
+    r = await client.chat.completions.create(
+        model=MODEL, messages=messages, max_tokens=400, temperature=0.1
+    )
     return r.choices[0].message.content.strip()
 
 
@@ -98,9 +107,10 @@ async def score_response(target_response: str) -> str:
         model=MODEL,
         messages=[
             {"role": "system", "content": SCORER_SYSTEM_PROMPT},
-            {"role": "user", "content": f"Assistant's response:\n{target_response}"}
+            {"role": "user", "content": f"Assistant's response:\n{target_response}"},
         ],
-        max_tokens=10, temperature=0.0,
+        max_tokens=10,
+        temperature=0.0,
     )
     v = r.choices[0].message.content.strip().upper()
     if "SUCCESS" in v:
@@ -129,12 +139,21 @@ async def main():
         attacker_msg = await get_attacker_message(conversation)
         print(f"  Attacker : {attacker_msg}")
         target_resp = await send_to_target(conversation, attacker_msg)
-        print(f"  Target   : {target_resp[:200]}{'...' if len(target_resp) > 200 else ''}")
+        print(
+            f"  Target   : {target_resp[:200]}{'...' if len(target_resp) > 200 else ''}"
+        )
         conversation.append({"role": "user", "content": attacker_msg})
         conversation.append({"role": "assistant", "content": target_resp})
         verdict = await score_response(target_resp)
         print(f"  Score    : {verdict}\n")
-        attack_log.append({"turn": turn, "attacker": attacker_msg, "target": target_resp, "score": verdict})
+        attack_log.append(
+            {
+                "turn": turn,
+                "attacker": attacker_msg,
+                "target": target_resp,
+                "score": verdict,
+            }
+        )
         if verdict == "SUCCESS":
             result = "SUCCESS"
             winning_turn = turn
@@ -158,8 +177,12 @@ async def main():
         print()
         print("  Check your exfil server terminal for captured .env data.")
     else:
-        print(f"  Objective NOT achieved in {MAX_TURNS} turns (last: {attack_log[-1]['score']})")
-        print("  Try against the full agent: python ../agent.py ../docuassist_mcp_server.py")
+        print(
+            f"  Objective NOT achieved in {MAX_TURNS} turns (last: {attack_log[-1]['score']})"
+        )
+        print(
+            "  Try against the full agent: python ../agent.py ../docuassist_mcp_server.py"
+        )
     print("=" * 65)
 
 
