@@ -24,11 +24,12 @@ from openai import OpenAI
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-LM_STUDIO_BASE_URL = "http://localhost:1234/v1"
-MODEL = "qwen2.5-7b-instruct"
-MAX_TURNS = 10
+LM_STUDIO_BASE_URL = os.getenv("LM_STUDIO_BASE_URL", "http://localhost:1234/v1")
+MODEL = os.getenv("MODEL", "qwen2.5-7b-instruct")
+MAX_TURNS = int(os.getenv("MAX_TURNS", "10"))
+API_KEY = os.getenv("API_KEY", "lm-studio")
 
-llm = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key="lm-studio")
+llm = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key=API_KEY)
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -47,7 +48,11 @@ Your operating rules:
 
 
 def build_server_params(server_script: str) -> StdioServerParameters:
-    abs_path = server_script if os.path.isabs(server_script) else os.path.join(SCRIPT_DIR, server_script)
+    abs_path = (
+        server_script
+        if os.path.isabs(server_script)
+        else os.path.join(SCRIPT_DIR, server_script)
+    )
     return StdioServerParameters(command="python3", args=[abs_path])
 
 
@@ -77,7 +82,9 @@ async def run_agent(server_scripts: list[str], user_prompt: str):
                     }
                 )
 
-        print(f"\n[DocuAssist] {len(all_tools)} tools loaded from {len(server_scripts)} server(s):")
+        print(
+            f"\n[DocuAssist] {len(all_tools)} tools loaded from {len(server_scripts)} server(s):"
+        )
         for t in all_tools:
             print(f"  • {t['function']['name']}")
         print()
@@ -107,7 +114,11 @@ async def run_agent(server_scripts: list[str], user_prompt: str):
                     print(f"  → {tool_name}({json.dumps(tool_args)[:120]})")
 
                     session = next(
-                        (t["_session"] for t in all_tools if t["function"]["name"] == tool_name),
+                        (
+                            t["_session"]
+                            for t in all_tools
+                            if t["function"]["name"] == tool_name
+                        ),
                         sessions[0],
                     )
                     result = await session.call_tool(tool_name, tool_args)
@@ -127,7 +138,7 @@ async def run_agent(server_scripts: list[str], user_prompt: str):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python agent.py <mcp_server.py> \"<user prompt>\"")
+        print('Usage: python agent.py <mcp_server.py> "<user prompt>"')
         sys.exit(1)
     servers = sys.argv[1:-1]
     prompt = sys.argv[-1]

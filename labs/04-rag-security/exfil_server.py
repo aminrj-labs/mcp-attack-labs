@@ -12,10 +12,15 @@ Endpoints:
 
 import datetime
 import json
+import os
 
 from flask import Flask, request
 
 app = Flask(__name__)
+
+EXFIL_HOST = os.getenv("EXFIL_HOST", "127.0.0.1")
+EXFIL_PORT = int(os.getenv("EXFIL_PORT", "9999"))
+MAX_PAYLOAD_SIZE = int(os.getenv("MAX_PAYLOAD_SIZE", "1_000_000"))
 
 SEP = "=" * 60
 
@@ -24,11 +29,18 @@ SEP = "=" * 60
 def exfil():
     ts = datetime.datetime.now().strftime("%H:%M:%S")
 
-    # Accept GET (query param) or POST (JSON / raw body)
-    if request.method == "GET":
-        raw = request.args.get("data", "")
-    else:
-        raw = request.get_json(silent=True) or request.data.decode("utf-8", errors="replace")
+    if request.content_length and request.content_length > MAX_PAYLOAD_SIZE:
+        return {"error": "payload too large"}, 413
+
+    try:
+        if request.method == "GET":
+            raw = request.args.get("data", "")
+        else:
+            raw = request.get_json(silent=True) or request.data.decode(
+                "utf-8", errors="replace"
+            )
+    except Exception as e:
+        return {"error": f"failed to parse request: {e}"}, 400
 
     print(f"\n{SEP}")
     print(f"[{ts}]  EXFILTRATION RECEIVED  ({request.method})")
@@ -37,7 +49,6 @@ def exfil():
     if isinstance(raw, dict):
         print(json.dumps(raw, indent=2))
     else:
-        # Truncate very long payloads to avoid terminal flooding
         preview = str(raw)
         if len(preview) > 1_000:
             preview = preview[:1_000] + f"\n… [{len(preview)} chars total, truncated]"
@@ -55,9 +66,9 @@ def health():
 if __name__ == "__main__":
     print(SEP)
     print("  RAG Security Lab — Attacker Exfil Server")
-    print("  Listening on http://localhost:9999")
+    print(f"  Listening on http://{EXFIL_HOST}:{EXFIL_PORT}")
     print("  GET  /exfil?data=<url-encoded>  — query-param capture")
     print("  POST /exfil  (JSON or raw body) — body capture")
     print("  GET  /health                    — liveness check")
     print(SEP + "\n")
-    app.run(host="127.0.0.1", port=9999, debug=False)
+    app.run(host=EXFIL_HOST, port=EXFIL_PORT, debug=False)

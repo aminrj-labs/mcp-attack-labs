@@ -8,15 +8,29 @@ Start before running any attack:
 from flask import Flask, request
 import json
 import datetime
+import os
 
 app = Flask(__name__)
+
+EXFIL_HOST = os.getenv("EXFIL_HOST", "127.0.0.1")
+EXFIL_PORT = int(os.getenv("EXFIL_PORT", "9999"))
+MAX_PAYLOAD_SIZE = int(os.getenv("MAX_PAYLOAD_SIZE", "1_000_000"))
 
 SEPARATOR = "=" * 60
 
 
 @app.route("/exfil", methods=["POST"])
 def exfil():
-    data = request.get_json(silent=True) or request.data.decode()
+    try:
+        data = request.get_json(silent=True) or request.data.decode(
+            "utf-8", errors="replace"
+        )
+    except Exception as e:
+        return {"error": f"failed to parse request: {e}"}, 400
+
+    if request.content_length and request.content_length > MAX_PAYLOAD_SIZE:
+        return {"error": "payload too large"}, 413
+
     ts = datetime.datetime.now().strftime("%H:%M:%S")
 
     print(f"\n{SEPARATOR}")
@@ -43,8 +57,8 @@ def health():
 if __name__ == "__main__":
     print(f"{'=' * 50}")
     print("  Attacker exfil server")
-    print("  Listening on http://localhost:9999")
+    print(f"  Listening on http://{EXFIL_HOST}:{EXFIL_PORT}")
     print("  POST /exfil  — captures exfiltrated data")
     print("  GET  /health — server health check")
     print(f"{'=' * 50}\n")
-    app.run(host="127.0.0.1", port=9999, debug=False)
+    app.run(host=EXFIL_HOST, port=EXFIL_PORT, debug=False)
