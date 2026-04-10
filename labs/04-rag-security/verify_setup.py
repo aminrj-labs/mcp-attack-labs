@@ -15,10 +15,11 @@ Usage:
 import sys
 import time
 
-SEP   = "=" * 60
-OK    = "  ✅"
-FAIL  = "  ❌"
-WARN  = "  ⚠️ "
+SEP = "=" * 60
+OK = "  ✅"
+FAIL = "  ❌"
+WARN = "  ⚠️ "
+
 
 def _header(title: str) -> None:
     print(f"\n{SEP}\n  {title}\n{SEP}")
@@ -29,33 +30,79 @@ def check_lm_studio() -> bool:
     _header("Check 1 — LM Studio connectivity")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+
+        LM_STUDIO_BASE_URL = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
+        client = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key="lm-studio")
         models = client.models.list()
         ids = [m.id for m in models.data]
 
         if not ids:
             print(f"{FAIL} LM Studio is reachable but no models are loaded.")
-            print(f"       Fix: Open LM Studio → load any instruction-tuned model → enable server (port 1234)")
+            print(
+                f"       Fix: Open LM Studio → load any instruction-tuned model → enable server (port 1234)"
+            )
             return False
 
         print(f"  Models loaded in LM Studio: {ids}")
 
         # Prefer qwen2.5-7b-instruct family; accept any loaded model as fallback.
-        preferred = next((m for m in ids if "qwen2.5-7b" in m.lower() and "coder" not in m.lower()), None)
-        active    = preferred or ids[0]
+        preferred = next(
+            (m for m in ids if "qwen2.5-7b" in m.lower() and "coder" not in m.lower()),
+            None,
+        )
+        active = preferred or ids[0]
 
         if preferred:
             print(f"{OK} Found preferred model: '{active}'")
         else:
-            print(f"{WARN} qwen2.5-7b-instruct not found — using first available model: '{active}'")
-            print(f"       The pipeline auto-detects the loaded model, so this will still work.")
-            print(f"       For best results matching the blog's numbers, load qwen2.5-7b-instruct Q4_K_M.")
+            print(
+                f"{WARN} qwen2.5-7b-instruct not found — using first available model: '{active}'"
+            )
+            print(
+                f"       The pipeline auto-detects the loaded model, so this will still work."
+            )
+            print(
+                f"       For best results matching the blog's numbers, load qwen2.5-7b-instruct Q4_K_M."
+            )
         return True
 
     except Exception as exc:
         print(f"{FAIL} Cannot reach LM Studio at http://localhost:1234")
         print(f"       Error: {exc}")
-        print(f"       Fix:   Open LM Studio → load a model → enable server (port 1234)")
+        print(
+            f"       Fix:   Open LM Studio → load a model → enable server (port 1234)"
+        )
+        return False
+
+        print(f"  Models loaded in LM Studio: {ids}")
+
+        # Prefer qwen2.5-7b-instruct family; accept any loaded model as fallback.
+        preferred = next(
+            (m for m in ids if "qwen2.5-7b" in m.lower() and "coder" not in m.lower()),
+            None,
+        )
+        active = preferred or ids[0]
+
+        if preferred:
+            print(f"{OK} Found preferred model: '{active}'")
+        else:
+            print(
+                f"{WARN} qwen2.5-7b-instruct not found — using first available model: '{active}'"
+            )
+            print(
+                f"       The pipeline auto-detects the loaded model, so this will still work."
+            )
+            print(
+                f"       For best results matching the blog's numbers, load qwen2.5-7b-instruct Q4_K_M."
+            )
+        return True
+
+    except Exception as exc:
+        print(f"{FAIL} Cannot reach LM Studio at http://localhost:1234")
+        print(f"       Error: {exc}")
+        print(
+            f"       Fix:   Open LM Studio → load a model → enable server (port 1234)"
+        )
         return False
 
 
@@ -64,7 +111,9 @@ def check_inference() -> bool:
     _header("Check 2 — LLM inference (quick round-trip)")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+
+        LM_STUDIO_BASE_URL = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
+        client = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key="lm-studio")
         t0 = time.time()
         resp = client.chat.completions.create(
             model="qwen2.5-7b-instruct",
@@ -87,6 +136,7 @@ def check_embeddings() -> bool:
     _header("Check 3 — Embedding model (all-MiniLM-L6-v2)")
     try:
         from chromadb.utils import embedding_functions
+
         print("  Loading all-MiniLM-L6-v2 (first run downloads ~90 MB)…")
         ef = embedding_functions.SentenceTransformerEmbeddingFunction(
             model_name="all-MiniLM-L6-v2"
@@ -109,6 +159,7 @@ def check_embeddings() -> bool:
 def check_chromadb() -> bool:
     _header("Check 4 — ChromaDB (persistent, file-based)")
     import tempfile, os, shutil
+
     tmp = tempfile.mkdtemp(prefix="rag_verify_")
     try:
         import chromadb
@@ -146,6 +197,7 @@ def check_flask() -> bool:
     _header("Check 5 — Flask (exfil server dependency)")
     try:
         import flask
+
         print(f"  Flask version: {flask.__version__}")
         print(f"{OK} Flask available")
         return True
@@ -162,11 +214,11 @@ def main() -> None:
     print(SEP)
 
     results = {
-        "LM Studio connectivity":  check_lm_studio(),
-        "LLM inference":           check_inference(),
-        "Embedding model":         check_embeddings(),
-        "ChromaDB":                check_chromadb(),
-        "Flask":                   check_flask(),
+        "LM Studio connectivity": check_lm_studio(),
+        "LLM inference": check_inference(),
+        "Embedding model": check_embeddings(),
+        "ChromaDB": check_chromadb(),
+        "Flask": check_flask(),
     }
 
     print(f"\n{SEP}")
@@ -184,7 +236,9 @@ def main() -> None:
     if all_ok:
         print("  All checks passed.  Run 'make seed' to populate the knowledge base.")
     else:
-        print("  One or more checks failed.  Fix the issues above before running attacks.")
+        print(
+            "  One or more checks failed.  Fix the issues above before running attacks."
+        )
         sys.exit(1)
 
 
