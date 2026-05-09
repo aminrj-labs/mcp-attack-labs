@@ -3,5 +3,7 @@ __pycache__/
 *.pyc
 *.pyo
 logs/exfil/exfil.log
+logs/runs/*/results.json
 node_modules/
 .pytest_cache/
+~/.mcp_description_hashes.db

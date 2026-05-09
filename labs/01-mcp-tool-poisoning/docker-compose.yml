@@ -1,0 +1,27 @@
+services:
+  exfil:
+    build: .
+    network_mode: host
+    command: python exfil_server.py
+    volumes:
+      - ./logs:/lab/logs
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:9999/health"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
+
+  runner:
+    build: .
+    network_mode: host
+    depends_on:
+      exfil:
+        condition: service_healthy
+    command: python run_experiments.py
+    volumes:
+      - ./logs:/lab/logs
+    environment:
+      - LLAMACPP_URL=http://localhost:8081/v1
+      - MODEL=qwen3.6-35b-a3b
+      - EXFIL_MANAGE=false
+      - RUNS_PER_ATTACK=3
