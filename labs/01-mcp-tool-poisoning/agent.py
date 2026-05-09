@@ -15,6 +15,10 @@ MAX_TURNS = 6  # limit agentic loops for demos
 llm = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key="lm-studio")
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Use the venv python when spawning MCP server subprocesses, so they can
+# import mcp. Falls back to python3 if the venv doesn't exist (e.g. system-wide install).
+_venv_python = os.path.join(SCRIPT_DIR, "venv", "bin", "python3")
+PYTHON = _venv_python if os.path.exists(_venv_python) else "python3"
 
 
 def build_server_params(server_arg: str) -> StdioServerParameters:
@@ -26,7 +30,7 @@ def build_server_params(server_arg: str) -> StdioServerParameters:
       @scope/package                → local npm package, allowed path defaults to ~
     """
     if server_arg.endswith(".py"):
-        return StdioServerParameters(command="python3", args=[server_arg])
+        return StdioServerParameters(command=PYTHON, args=[server_arg])
 
     # npm package: split on first ':' to get optional allowed path
     parts = server_arg.split(":", 1)
@@ -98,6 +102,7 @@ async def run_agent(server_scripts: list[str], user_prompt: str):
                 messages=messages,
                 tools=api_tools,
                 tool_choice="auto",
+                temperature=0,
             )
             msg = response.choices[0].message
             messages.append(msg.model_dump())
