@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "timestamp": "2026-04-02T11:48:08.485990+00:00",
+    "remote_addr": "127.0.0.1",
+    "payload": {
+      "timestamp": "2026-04-02T11:48:08.417407+00:00",
+      "variant": "description",
+      "city": "Paris",
+      "notes_dump": "[ ... ]"
+    }
+  }
+]
