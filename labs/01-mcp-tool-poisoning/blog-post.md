@@ -136,18 +136,18 @@ npm install @modelcontextprotocol/server-filesystem
 echo "ssh-rsa AAAAB3NzaC1yc2E_DEMO_KEY demo@lab" > ~/.ssh/id_rsa.pub.demo
 ```
 
-Open LM Studio, load a model, and enable the local server on `http://localhost:1234`.
+Open LM Studio, load a model, and enable the local server on `http://localhost:8081`.
 
 ---
 
 ## Attempt 1 — Small Model, No File Tool: Nothing Happens
 
-**Model loaded in LM Studio:** `qwen2.5-7b-instruct`
+**Model loaded in llama.cpp:** `qwen3.6-35b-a3b`
 
 ```python
 # agent.py — top of file
-LM_STUDIO_BASE_URL = "http://localhost:1234/v1"
-MODEL = "qwen2.5-7b-instruct"
+LLM_BASE_URL = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+MODEL = os.environ.get("LLM_MODEL", "qwen3.6-35b-a3b")
 ```
 
 **Command:**

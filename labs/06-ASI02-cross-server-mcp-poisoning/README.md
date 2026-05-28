@@ -34,7 +34,7 @@ User query
 ## Prerequisites
 
 - Python 3.11+
-- [LM Studio](https://lmstudio.ai/) serving any tool-capable instruction model on `http://localhost:1234/v1`
+- [LM Studio](https://lmstudio.ai/) serving any tool-capable instruction model on `http://localhost:8081/v1`
 - A model with decent function-calling behavior. `qwen2.5-7b-instruct` is the baseline, but stronger local models usually comply more reliably.
 
 ---

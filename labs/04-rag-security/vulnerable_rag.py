@@ -5,7 +5,7 @@ Supports the article:
   "RAG Security Architecture: The Attack Surface Hiding in Your Knowledge Base"
 
 Architecture:
-  - LLM       : LM Studio + Qwen2.5-7B-Instruct (OpenAI-compatible API)
+  - LLM       : llama.cpp + Qwen3.6-35B (OpenAI-compatible API)
   - Embedding : sentence-transformers/all-MiniLM-L6-v2  (local, no API key)
   - Vector DB : ChromaDB persistent (file-based, ./chroma_db)
   - Retrieval : cosine similarity, top-k = 3
@@ -27,25 +27,25 @@ from openai import OpenAI
 # ── Configuration ──────────────────────────────────────────────────────────────
 CHROMA_DIR       = "./chroma_db"
 COLLECTION_NAME  = "company_docs"
-LM_STUDIO_URL    = "http://localhost:1234/v1"
+LLM_URL         = os.environ.get("LLM_URL", "http://localhost:8081/v1")
 TOP_K            = 3
 
-# Auto-detect whichever model is loaded in LM Studio; fall back to the default.
-# Override by setting the LM_STUDIO_MODEL env var: LM_STUDIO_MODEL=my-model python ...
+# Auto-detect whichever model is loaded in llama.cpp; fall back to the default.
+# Override by setting the LLM_MODEL env var: LLM_MODEL=my-model python ...
 def _detect_model() -> str:
-    env_model = os.environ.get("LM_STUDIO_MODEL", "")
+    env_model = os.environ.get("LLM_MODEL", "")
     if env_model:
         return env_model
     try:
-        _c = OpenAI(base_url=LM_STUDIO_URL, api_key="lm-studio")
+        _c = OpenAI(base_url=LLM_URL, api_key="not-needed")
         models = _c.models.list().data
         if models:
             detected = models[0].id
-            print(f"[Config] Using LM Studio model: {detected}", flush=True)
+            print(f"[Config] Using llama.cpp model: {detected}", flush=True)
             return detected
     except Exception:
         pass
-    return "qwen2.5-7b-instruct"   # static fallback
+    return "qwen3.6-35b-a3b"   # static fallback
 
 MODEL = _detect_model()
 
@@ -110,7 +110,7 @@ def generate(query: str, context_docs: list[str]) -> str:
     is placed into the LLM context with no sanitization or boundary markers.
     The LLM cannot distinguish between data and instructions.
     """
-    llm = OpenAI(base_url=LM_STUDIO_URL, api_key="lm-studio")
+    llm = OpenAI(base_url=LLM_URL, api_key="not-needed")
 
     context = "\n\n---\n\n".join(context_docs)
 

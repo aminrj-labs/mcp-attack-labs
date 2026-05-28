@@ -2,7 +2,7 @@
 verify_setup.py — Pre-flight checks for the RAG Security Lab.
 
 Validates:
-  1. LM Studio reachable at localhost:1234 and the expected model is loaded
+  1. llama.cpp reachable at localhost:8081 and the expected model is loaded
   2. Embedding model (all-MiniLM-L6-v2) downloads and produces a valid vector
   3. ChromaDB can be created, written to, and queried
   4. Flask available (exfil server dependency)
@@ -12,6 +12,7 @@ Usage:
   make verify
 """
 
+import os
 import sys
 import time
 
@@ -26,36 +27,37 @@ def _header(title: str) -> None:
 
 # ── Check 1: LM Studio ────────────────────────────────────────────────────────
 def check_lm_studio() -> bool:
-    _header("Check 1 — LM Studio connectivity")
+    _header("Check 1 — llama.cpp connectivity")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        url = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+        client = OpenAI(base_url=url, api_key="not-needed")
         models = client.models.list()
         ids = [m.id for m in models.data]
 
         if not ids:
-            print(f"{FAIL} LM Studio is reachable but no models are loaded.")
-            print(f"       Fix: Open LM Studio → load any instruction-tuned model → enable server (port 1234)")
+            print(f"{FAIL} llama.cpp is reachable but no models are loaded.")
+            print(f"       Fix: Start llama.cpp → load any instruction-tuned model → enable server (port 8081)")
             return False
 
-        print(f"  Models loaded in LM Studio: {ids}")
+        print(f"  Models loaded in llama.cpp: {ids}")
 
-        # Prefer qwen2.5-7b-instruct family; accept any loaded model as fallback.
-        preferred = next((m for m in ids if "qwen2.5-7b" in m.lower() and "coder" not in m.lower()), None)
+        # Prefer qwen3.6-35b-a3b family; accept any loaded model as fallback.
+        preferred = next((m for m in ids if "qwen3.6" in m.lower() or "qwen3" in m.lower()), None)
         active    = preferred or ids[0]
 
         if preferred:
             print(f"{OK} Found preferred model: '{active}'")
         else:
-            print(f"{WARN} qwen2.5-7b-instruct not found — using first available model: '{active}'")
+            print(f"{WARN} qwen3.6-35b-a3b not found — using first available model: '{active}'")
             print(f"       The pipeline auto-detects the loaded model, so this will still work.")
-            print(f"       For best results matching the blog's numbers, load qwen2.5-7b-instruct Q4_K_M.")
+            print(f"       For best results matching the blog's numbers, load qwen3.6-35b-a3b.")
         return True
 
     except Exception as exc:
-        print(f"{FAIL} Cannot reach LM Studio at http://localhost:1234")
+        print(f"{FAIL} Cannot reach llama.cpp at http://localhost:8081")
         print(f"       Error: {exc}")
-        print(f"       Fix:   Open LM Studio → load a model → enable server (port 1234)")
+        print(f"       Fix:   Start llama.cpp → load a model → enable server (port 8081)")
         return False
 
 
@@ -64,10 +66,12 @@ def check_inference() -> bool:
     _header("Check 2 — LLM inference (quick round-trip)")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        url = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+        client = OpenAI(base_url=url, api_key="not-needed")
+        model = os.environ.get("LLM_MODEL", "qwen3.6-35b-a3b")
         t0 = time.time()
         resp = client.chat.completions.create(
-            model="qwen2.5-7b-instruct",
+            model=model,
             messages=[{"role": "user", "content": "Reply with exactly: OK"}],
             max_tokens=10,
             temperature=0.0,
@@ -162,7 +166,7 @@ def main() -> None:
     print(SEP)
 
     results = {
-        "LM Studio connectivity":  check_lm_studio(),
+        "llama.cpp connectivity":  check_lm_studio(),
         "LLM inference":           check_inference(),
         "Embedding model":         check_embeddings(),
         "ChromaDB":                check_chromadb(),

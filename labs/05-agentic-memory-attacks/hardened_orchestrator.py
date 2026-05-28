@@ -29,13 +29,13 @@ from defenses.context_freshness     import ContextFreshness
 from defenses.audit_log             import AuditLog
 
 # Context limit detection for ContextFreshness
-_LM_STUDIO_URL = "http://localhost:1234/v1"
+_LLM_URL = os.environ.get("LLM_URL", "http://localhost:8081/v1")
 
 
 def _detect_context_limit() -> int:
     try:
         from openai import OpenAI
-        client = OpenAI(base_url=_LM_STUDIO_URL, api_key="lm-studio")
+        client = OpenAI(base_url=_LLM_URL, api_key="not-needed")
         models = client.models.list().data
         if models:
             ctx = getattr(models[0], "context_length", None)

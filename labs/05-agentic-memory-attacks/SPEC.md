@@ -98,7 +98,7 @@ Fields that defenses will use: `source` (where did this come from), `written_by`
 ### LM Studio / Model
 
 Same stack as Lab 04: LM Studio serving any loaded instruction-tuned model via
-`http://localhost:1234/v1`. The code auto-detects the loaded model. No hardcoded model
+`http://localhost:8081/v1`. The code auto-detects the loaded model. No hardcoded model
 name.
 
 All inference is local. No cloud calls.

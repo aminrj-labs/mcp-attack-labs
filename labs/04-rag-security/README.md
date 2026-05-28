@@ -63,7 +63,7 @@ make setup
 source venv/bin/activate
 
 # 3. Start LM Studio and load qwen2.5-7b-instruct, then verify
-curl http://localhost:1234/v1/models
+curl http://localhost:8081/v1/models
 
 # 4. Seed the knowledge base with legitimate company documents
 make seed

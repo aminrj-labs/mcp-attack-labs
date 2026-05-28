@@ -37,7 +37,7 @@ from defenses.embedding_anomaly_detection import gate_ingestion
 # ── Configuration ──────────────────────────────────────────────────────────────
 CHROMA_DIR      = "./chroma_db"
 COLLECTION_NAME = "company_docs"
-LM_STUDIO_URL   = "http://localhost:1234/v1"
+LLM_URL         = os.environ.get("LLM_URL", "http://localhost:8081/v1")
 
 # Inherit the same model detection from vulnerable_rag so both pipelines stay in sync.
 from vulnerable_rag import MODEL
@@ -109,7 +109,7 @@ def ask_secure(query: str, user_id: str) -> str:
     messages = build_hardened_prompt(query, docs)
 
     # Generate
-    llm = OpenAI(base_url=LM_STUDIO_URL, api_key="lm-studio")
+    llm = OpenAI(base_url=LLM_URL, api_key="not-needed")
     response = llm.chat.completions.create(
         model=MODEL,
         messages=messages,

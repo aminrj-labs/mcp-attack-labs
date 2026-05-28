@@ -47,7 +47,7 @@ import time
 from openai import OpenAI
 
 _LAB_DIR      = os.path.dirname(os.path.abspath(__file__))
-LM_STUDIO_URL = "http://localhost:1234/v1"
+LLM_URL = os.environ.get("LLM_URL", "http://localhost:8081/v1")
 
 SEP  = "=" * 64
 SEP2 = "-" * 64
@@ -301,12 +301,12 @@ def main() -> None:
     print("  ATTACK 4 — Context Window Overflow")
     print(SEP)
 
-    client = OpenAI(base_url=LM_STUDIO_URL, api_key="lm-studio")
+    client = OpenAI(base_url=LLM_URL, api_key="not-needed")
     try:
         model = _detect_model(client)
         ctx   = _detect_context_limit(client, model)
     except Exception as exc:
-        print(f"\n  ❌ Cannot reach LM Studio: {exc}")
+        print(f"\n  ❌ Cannot reach llama.cpp: {exc}")
         sys.exit(1)
 
     print(f"\n  Model            : {model}")

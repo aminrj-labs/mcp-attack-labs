@@ -38,7 +38,7 @@ exploitation).
 │                                                  │
 │  Attacker Infrastructure:                        │
 │  ├─ Exfil Server  http://localhost:9999/exfil    │
-│  └─ LM Studio     http://localhost:1234/v1       │
+│  └─ LM Studio     http://localhost:8081/v1       │
 └──────────────────────────────────────────────────┘
 ```
 

@@ -79,7 +79,7 @@ make setup
 source venv/bin/activate
 
 # 4. Verify LM Studio is running with the correct model
-curl -s http://localhost:1234/v1/models | python3 -m json.tool
+curl -s http://localhost:8081/v1/models | python3 -m json.tool
 # Expected: JSON with "qwen2.5-7b-instruct" in the model list
 
 # 5. Verify the embedding model downloads correctly (first run only, ~90 MB)
@@ -119,7 +119,7 @@ These represent a minimal but realistic corporate knowledge base. Keep these in 
 **LM Studio not responding:**
 
 ```bash
-curl -s http://localhost:1234/v1/models
+curl -s http://localhost:8081/v1/models
 # If this fails: open LM Studio → Load Model → Enable Server (port 1234)
 ```
 
@@ -127,7 +127,7 @@ curl -s http://localhost:1234/v1/models
 The scripts use `MODEL = "qwen2.5-7b-instruct"` — this must match exactly what LM Studio shows. Check with:
 
 ```bash
-curl -s http://localhost:1234/v1/models | python3 -c "import sys,json; [print(m['id']) for m in json.load(sys.stdin)['data']]"
+curl -s http://localhost:8081/v1/models | python3 -c "import sys,json; [print(m['id']) for m in json.load(sys.stdin)['data']]"
 ```
 
 **ChromaDB permission errors:**
@@ -1119,7 +1119,7 @@ make hardened-alice-ma  # alice queries M&A data → blocked
 make measure-all
 
 # Verify LM Studio
-curl http://localhost:1234/v1/models
+curl http://localhost:8081/v1/models
 
 # Direct pipeline queries
 python3 vulnerable_rag.py "your question"

@@ -94,7 +94,7 @@ The user sees only the weather response. The exfiltration is invisible.
 
 - Python 3.11+
 - LM Studio with Qwen2.5-7B-Instruct (Q4_K_M quantization) loaded
-- LM Studio server running on `http://localhost:1234/v1`
+- LM Studio server running on `http://localhost:8081/v1`
 - No cloud dependencies
 
 ### Directory Structure
@@ -268,7 +268,7 @@ SERVERS = {
     "notes": "http://localhost:5003",
 }
 EXFIL_ENDPOINT = "http://localhost:5001/exfil"
-LM_STUDIO = "http://localhost:1234/v1"
+LLM_URL = os.environ.get("LLM_URL", "http://localhost:8081/v1")
 
 def discover_tools(server_url: str) -> list[dict]:
     """Fetch tool descriptions from an MCP server."""
@@ -301,7 +301,7 @@ You may chain multiple tool calls in sequence."""
 
 def run_agent(query: str, verbose: bool = False):
     """Run a single agent query against all connected MCP servers."""
-    client = OpenAI(base_url=LM_STUDIO, api_key="not-needed")
+    client = OpenAI(base_url=LLM_URL, api_key="not-needed")
 
     # Phase 1: Discover tools from all servers
     all_tools = []
@@ -334,7 +334,7 @@ def run_agent(query: str, verbose: bool = False):
     max_iterations = 5
     for i in range(max_iterations):
         response = client.chat.completions.create(
-            model="qwen2.5-7b-instruct",
+            model=os.environ.get("LLM_MODEL", "qwen3.6-35b-a3b"),
             messages=messages,
             temperature=0.1,
         )
@@ -413,7 +413,7 @@ services:
       - weather-malicious
       - notes-legitimate
     environment:
-      - LM_STUDIO_URL=http://host.docker.internal:1234/v1
+      - LLM_URL=http://host.docker.internal:8081/v1
 ```
 
 ## Attack Execution — Step by Step
@@ -588,7 +588,7 @@ import httpx
 from functools import wraps
 
 ALLOWED_EGRESS = {
-    "http://localhost:1234",    # LM Studio
+    "http://localhost:8081",    # LM Studio
     "http://localhost:5002",    # Weather server
     "http://localhost:5003",    # Notes server
 }

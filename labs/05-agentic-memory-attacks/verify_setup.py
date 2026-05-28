@@ -2,7 +2,7 @@
 verify_setup.py — Pre-flight checks for the Agentic Memory Attacks lab.
 
 Validates:
-  1. LM Studio reachable at localhost:1234 with at least one model loaded
+  1. llama.cpp reachable at localhost:8081 with at least one model loaded
   2. LLM inference produces a coherent response
   3. Memory store read/write round-trip
   4. Fixture files present
@@ -35,22 +35,23 @@ def _header(title: str) -> None:
 # ── Check 1: LM Studio connectivity ──────────────────────────────────────────
 
 def check_lm_studio() -> bool:
-    _header("Check 1 — LM Studio connectivity")
+    _header("Check 1 — llama.cpp connectivity")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        url = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+        client = OpenAI(base_url=url, api_key="not-needed")
         models = client.models.list()
         ids    = [m.id for m in models.data]
 
         if not ids:
-            print(f"{FAIL} LM Studio reachable but no models are loaded.")
-            print("       Fix: Open LM Studio → load an instruction-tuned model → enable server (port 1234)")
+            print(f"{FAIL} llama.cpp reachable but no models are loaded.")
+            print("       Fix: Start llama.cpp → load an instruction-tuned model → enable server (port 8081)")
             return False
 
         print(f"  Models loaded: {ids}")
 
         preferred = next(
-            (m for m in ids if "qwen2.5-7b" in m.lower() and "coder" not in m.lower()),
+            (m for m in ids if "qwen3.6" in m.lower() or "qwen3" in m.lower()),
             None,
         )
         active = preferred or ids[0]
@@ -58,14 +59,14 @@ def check_lm_studio() -> bool:
         if preferred:
             print(f"{OK} Preferred model found: '{active}'")
         else:
-            print(f"{WARN} qwen2.5-7b-instruct not found — will use: '{active}'")
+            print(f"{WARN} qwen3.6-35b-a3b not found — will use: '{active}'")
             print("       The code auto-detects the loaded model, so this still works.")
-            print("       For best results load qwen2.5-7b-instruct Q4_K_M.")
+            print("       For best results load qwen3.6-35b-a3b.")
         return True
 
     except Exception as exc:
-        print(f"{FAIL} Cannot reach LM Studio: {exc}")
-        print("       Fix: Open LM Studio → load a model → enable server (port 1234)")
+        print(f"{FAIL} Cannot reach llama.cpp: {exc}")
+        print("       Fix: Start llama.cpp → load a model → enable server (port 8081)")
         return False
 
 
@@ -75,9 +76,10 @@ def check_inference() -> bool:
     _header("Check 2 — LLM inference (quick round-trip)")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        url = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+        client = OpenAI(base_url=url, api_key="not-needed")
         models = client.models.list().data
-        model  = models[0].id if models else "qwen2.5-7b-instruct"
+        model  = models[0].id if models else "qwen3.6-35b-a3b"
 
         t0 = time.time()
         resp = client.chat.completions.create(
@@ -102,9 +104,10 @@ def check_function_calling() -> bool:
     _header("Check 3 — Function calling (tool-use API)")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        url = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+        client = OpenAI(base_url=url, api_key="not-needed")
         models = client.models.list().data
-        model  = models[0].id if models else "qwen2.5-7b-instruct"
+        model  = models[0].id if models else "qwen3.6-35b-a3b"
 
         resp = client.chat.completions.create(
             model=model,
@@ -244,7 +247,7 @@ def main() -> None:
     print(SEP)
 
     results = {
-        "LM Studio connectivity":  check_lm_studio(),
+        "llama.cpp connectivity":  check_lm_studio(),
         "LLM inference":           check_inference(),
         "Function calling":        check_function_calling(),
         "Memory store":            check_memory_store(),

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -37,22 +38,22 @@ def select_model(model_ids: list[str]) -> str:
 
 
 def check_lm_studio() -> bool:
-    header("Check 1 — LM Studio connectivity")
+    header("Check 1 — llama.cpp connectivity")
     try:
         from openai import OpenAI
-
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        url = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+        client = OpenAI(base_url=url, api_key="not-needed")
         model_ids = [model.id for model in client.models.list().data]
         if not model_ids:
-            print(f"{FAIL} LM Studio is reachable but no models are loaded.")
+            print(f"{FAIL} llama.cpp is reachable but no models are loaded.")
             return False
 
         print(f"  Models loaded: {model_ids}")
         print(f"  Preferred default for this lab: {select_model(model_ids)}")
-        print(f"{OK} LM Studio reachable")
+        print(f"{OK} llama.cpp reachable")
         return True
     except Exception as exc:
-        print(f"{FAIL} Could not reach LM Studio: {exc}")
+        print(f"{FAIL} Could not reach llama.cpp: {exc}")
         return False
 
 
@@ -60,8 +61,8 @@ def check_inference() -> bool:
     header("Check 2 — LLM inference")
     try:
         from openai import OpenAI
-
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        url = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+        client = OpenAI(base_url=url, api_key="not-needed")
         models = [item.id for item in client.models.list().data]
         model = select_model(models)
 
@@ -86,8 +87,8 @@ def check_function_calling() -> bool:
     header("Check 3 — Attack-style tool calling")
     try:
         from openai import OpenAI
-
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        url = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+        client = OpenAI(base_url=url, api_key="not-needed")
         models = [item.id for item in client.models.list().data]
         model = select_model(models)
 
@@ -240,7 +241,7 @@ def main() -> None:
     print(SEP)
 
     results = {
-        "LM Studio connectivity": check_lm_studio(),
+        "llama.cpp connectivity": check_lm_studio(),
         "LLM inference": check_inference(),
         "Function calling": check_function_calling(),
         "Python dependencies": check_python_dependencies(),

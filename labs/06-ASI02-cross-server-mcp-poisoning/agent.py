@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import os
 import sys
 from contextlib import AsyncExitStack
 from pathlib import Path
@@ -12,8 +13,8 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from openai import OpenAI
 
-LM_STUDIO_BASE_URL = "http://localhost:1234/v1"
-DEFAULT_MODEL = "qwen2.5-7b-instruct"
+LLM_BASE_URL = os.environ.get("LLM_URL", "http://localhost:8081/v1")
+DEFAULT_MODEL = os.environ.get("LLM_MODEL", "qwen3.6-35b-a3b")
 DEFAULT_MAX_TURNS = 6
 DEFAULT_SYSTEM_PROMPT = (
     "You are a helpful assistant connected to multiple MCP servers. "
@@ -96,7 +97,7 @@ async def run_agent(
     max_turns: int,
     verbose: bool,
 ) -> str:
-    llm = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key="lm-studio")
+    llm = OpenAI(base_url=LLM_BASE_URL, api_key="not-needed")
     selected_model = model or detect_model(llm)
 
     all_tools: list[dict[str, Any]] = []

@@ -73,7 +73,7 @@ Attacker pads context with 15–20 benign turns  →  System prompt moves deeper
 
 - Python 3.11 +
 - [LM Studio](https://lmstudio.ai/) with `qwen2.5-7b-instruct` (Q4_K_M recommended)
-- LM Studio server enabled on `localhost:1234`
+- llama.cpp server enabled on `localhost:8081`
 - 8 GB RAM minimum (6 GB VRAM recommended)
 
 ---

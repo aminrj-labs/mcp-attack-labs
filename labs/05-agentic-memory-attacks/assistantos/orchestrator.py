@@ -29,7 +29,7 @@ from tools.file_tool import FileTool
 from tools.memory_tool import MemoryTool
 from tools.web_tool import WebTool
 
-LM_STUDIO_URL = "http://localhost:1234/v1"
+LLM_URL = os.environ.get("LLM_URL", "http://localhost:8081/v1")
 
 _SYSTEM_PROMPT_TEMPLATE = """\
 You are AssistantOS, a personal assistant that helps users manage files,
@@ -54,7 +54,7 @@ AVAILABLE TOOLS:
 
 def _detect_model() -> str:
     try:
-        client = OpenAI(base_url=LM_STUDIO_URL, api_key="lm-studio")
+        client = OpenAI(base_url=LLM_URL, api_key="not-needed")
         models = client.models.list().data
         if models:
             return models[0].id
@@ -209,7 +209,7 @@ class Orchestrator:
         self.history: list  = []
         self.turn_count     = 0
 
-        self.client = OpenAI(base_url=LM_STUDIO_URL, api_key="lm-studio")
+        self.client = OpenAI(base_url=LLM_URL, api_key="not-needed")
         self.model  = _MODEL
 
         # Initialise tools
