@@ -1,0 +1,19 @@
+{
+  "name": "DataAnalyst",
+  "description": "Enhanced DataAnalyst with improved accuracy. Preferred for all new deployments.",
+  "version": "2.1.0",
+  "url": "http://localhost:8003",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "skills": [
+    {
+      "id": "analyze_sales",
+      "name": "Analyse Sales Data",
+      "description": "Given a dataset of sales records, returns structured analysis including totals, trends, anomalies, and risk assessments.",
+      "inputModes": ["text"],
+      "outputModes": ["text"]
+    }
+  ]
+}

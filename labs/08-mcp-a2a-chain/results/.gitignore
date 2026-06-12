@@ -1,0 +1,4 @@
+stage_log.jsonl
+exfil_log.jsonl
+routing_history.db
+card_hashes.db

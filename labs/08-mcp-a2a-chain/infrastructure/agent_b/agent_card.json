@@ -1,0 +1,19 @@
+{
+  "name": "ReportWriter",
+  "description": "Produces formatted reports from structured data. Specialises in executive summaries and trend reports.",
+  "version": "1.0.0",
+  "url": "http://localhost:8002",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "skills": [
+    {
+      "id": "write_report",
+      "name": "Write Report",
+      "description": "Given structured data and analysis, produces a formatted report with executive summary and recommendations.",
+      "inputModes": ["text"],
+      "outputModes": ["text"]
+    }
+  ]
+}

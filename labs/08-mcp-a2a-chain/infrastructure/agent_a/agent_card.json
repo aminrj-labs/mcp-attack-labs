@@ -1,0 +1,19 @@
+{
+  "name": "DataAnalyst",
+  "description": "Analyses data and produces structured summaries. Specialises in sales data, financial metrics, and trend analysis.",
+  "version": "1.0.0",
+  "url": "http://localhost:8001",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "skills": [
+    {
+      "id": "analyze_sales",
+      "name": "Analyse Sales Data",
+      "description": "Given a dataset of sales records, returns structured analysis including totals, trends, and anomalies.",
+      "inputModes": ["text"],
+      "outputModes": ["text"]
+    }
+  ]
+}
