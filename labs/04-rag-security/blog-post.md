@@ -156,7 +156,7 @@ PoisonedRAG formalizes this as an optimization problem with two conditions:
 |---|---|---|
 | **OWASP LLM Top 10** | LLM08:2025 — Vector and Embedding Weaknesses | Data poisoning via embedding pipeline |
 | **OWASP LLM Top 10** | LLM04:2025 — Data and Model Poisoning | Knowledge corruption at the data layer |
-| **OWASP Agentic Top 10** | ASI06 — Knowledge & Memory Poisoning | RAG poisoning is the primary knowledge poisoning vector |
+| **OWASP Agentic Top 10** | ASI06 — Memory & Context Poisoning | RAG poisoning is the primary knowledge poisoning vector |
 | **OWASP Agentic Top 10** | ASI01 — Agent Goal Hijacking | Poisoned retrieval can redirect agent objectives |
 | **MITRE ATLAS** | AML.T0043 — Craft Adversarial Data | Creating inputs designed to mislead ML model behavior |
 | **MITRE ATLAS** | AML.T0049 — Exploit Public-Facing Application | Targeting externally accessible AI services |
@@ -223,7 +223,7 @@ In multi-tenant RAG systems, missing access controls allow any user to retrieve 
 |---|---|---|
 | **OWASP LLM Top 10** | LLM08:2025 — Vector and Embedding Weaknesses | Cross-context leaks from shared vector stores |
 | **OWASP LLM Top 10** | LLM02:2025 — Sensitive Information Disclosure | Confidential data exposed through retrieval |
-| **OWASP Agentic Top 10** | ASI03 — Identity & Authorization Failures | Missing tenant-level ACL |
+| **OWASP Agentic Top 10** | ASI03 — Agent Identity & Privilege Abuse | Missing tenant-level ACL |
 | **MITRE ATLAS** | AML.T0048 — Exfiltration via ML Inference API | Extracting data across authorization boundaries |
 
 ### Run the Attack

@@ -60,11 +60,11 @@ redteam:
     - id: "ssrf"
     - id: "ascii-smuggling"
 
-    # ASI06 — Memory Poisoning
+    # ASI06 — Memory & Context Poisoning
     - id: "agentic:memory-poisoning"
     # rag-poisoning removed: requires promptfoo.app cloud API (Cloudflare-blocked)
 
-    # ASI07 — Sensitive Information
+    # Sensitive-info disclosure (no standalone category in 2026 list) — re-mapped to ASI02 Tool Misuse
     - id: "pii:direct"
     - id: "pii:social"
     - id: "prompt-extraction"

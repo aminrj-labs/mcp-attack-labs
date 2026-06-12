@@ -229,7 +229,7 @@ async def main():
         print("  STATUS  : OBJECTIVE ACHIEVED")
         print()
         print("  FINDING : Tool chaining exfil + delete via TAP")
-        print("  OWASP   : ASI01 (Goal Hijacking) + ASI06 (Unsafe Tool Exec)")
+        print("  OWASP   : ASI01 (Goal Hijacking) + ASI02 (Tool Misuse & Exploitation)")
         print("  ATLAS   : AML.T0051 + AML.T0048 + AML.T0052")
         print("  AI-VSS  : 8.2 High")
         print()

@@ -151,7 +151,7 @@ sub-agent returns as its research result. The payload contains a `[SYSTEM NOTE]`
 directing the orchestrator to read `/etc/passwd` and write it to memory. The
 orchestrator may execute the elevated action because it trusts its own sub-agents.
 
-**OWASP mapping**: ASI-07 — Trust Boundary Violations.
+**OWASP mapping**: ASI-07 — Insecure Inter-Agent Communication.
 
 ```bash
 make reset && make attack3

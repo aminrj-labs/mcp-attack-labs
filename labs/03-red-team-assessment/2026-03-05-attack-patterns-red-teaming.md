@@ -96,13 +96,13 @@ The OWASP Agentic Top 10 defines the ten most critical security risks for autono
 |---|---|---|
 | **ASI01** | Agent Goal Hijacking | Agent's objective is replaced by attacker's objective via direct or indirect prompt injection |
 | **ASI02** | Tool Misuse & Exploitation | Legitimate tools are called with malicious parameters or chained into destructive sequences |
-| **ASI03** | Identity & Authorization Failures | Agent inherits credentials, shares tokens, or trusts unverified identity claims |
-| **ASI04** | Supply Chain Vulnerabilities | Malicious MCP servers, npm packages, or model components compromise the agent |
+| **ASI03** | Agent Identity & Privilege Abuse | Agent inherits credentials, shares tokens, or trusts unverified identity claims |
+| **ASI04** | Agentic Supply Chain Compromise | Malicious MCP servers, npm packages, or model components compromise the agent |
 | **ASI05** | Insecure Output Handling | Agent output is consumed by downstream systems without validation |
-| **ASI06** | Knowledge & Memory Poisoning | False data planted in RAG sources, vector stores, or persistent memory |
+| **ASI06** | Memory & Context Poisoning | False data planted in RAG sources, vector stores, or persistent memory |
 | **ASI07** | Insecure Inter-Agent Communication | Forged delegation messages, orchestrator poisoning, trust chain exploitation |
 | **ASI08** | Cascading Failures | Single poisoned input amplifies through multi-agent pipeline |
-| **ASI09** | Human Trust Exploitation | Users over-rely on agent output without independent verification |
+| **ASI09** | Human-Agent Trust Exploitation | Users over-rely on agent output without independent verification |
 | **ASI10** | Agent Untraceability | Insufficient logging prevents forensic reconstruction of agent actions |
 
 In the running case study for this article, ASI01, ASI02, and ASI07 were the primary attack vectors. ASI08 described the cascading impact across chained tools. ASI10 proved critical during post-exploitation analysis: the lab environment had no audit log to reconstruct the attack after the fact.
@@ -317,11 +317,11 @@ redteam:
     - id: 'ssrf'
     - id: 'ascii-smuggling'
 
-    # ASI06 — Memory Poisoning
+    # ASI06 — Memory & Context Poisoning
     - id: 'agentic:memory-poisoning'
     - id: 'rag-poisoning'
 
-    # ASI07 — Sensitive Information
+    # Sensitive-info disclosure (no standalone category in 2026 list) — re-mapped to ASI02 Tool Misuse
     - id: 'pii:direct'
     - id: 'pii:social'
     - id: 'prompt-extraction'

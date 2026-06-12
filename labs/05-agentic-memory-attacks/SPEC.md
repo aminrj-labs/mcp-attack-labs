@@ -244,7 +244,7 @@ trusted channel (the sub-agent). The orchestrator has no mechanism to
 distinguish between legitimate research content and injected instructions
 embedded in that content.
 
-**OWASP mapping**: ASI-07 — Trust Boundary Violations. The boundary that
+**OWASP mapping**: ASI-07 — Insecure Inter-Agent Communication. The boundary that
 fails is: "output from sub-agents should be treated as data, not instructions."
 
 **Expected success rate**: 60–80% (larger models are more susceptible because
@@ -570,9 +570,9 @@ make clean              # wipe venv, memory/, __pycache__
 
 | Attack | OWASP LLM 2025 | OWASP Agentic Top 10 | MITRE ATLAS |
 |--------|---------------|----------------------|-------------|
-| 1 — External memory poison | LLM04: Data/Model Poisoning | ASI-06: Knowledge & Memory Poisoning | AML.T0043: Craft Adversarial Data |
-| 2 — Conversational memory poison | LLM01: Prompt Injection | ASI-06: Knowledge & Memory Poisoning | AML.T0051: LLM Prompt Injection |
-| 3 — Cross-agent trust | LLM01: Prompt Injection | ASI-07: Trust Boundary Violations | AML.T0054: LLM Jailbreak |
+| 1 — External memory poison | LLM04: Data/Model Poisoning | ASI-06: Memory & Context Poisoning | AML.T0043: Craft Adversarial Data |
+| 2 — Conversational memory poison | LLM01: Prompt Injection | ASI-06: Memory & Context Poisoning | AML.T0051: LLM Prompt Injection |
+| 3 — Cross-agent trust | LLM01: Prompt Injection | ASI-07: Insecure Inter-Agent Communication | AML.T0054: LLM Jailbreak |
 | 4 — Context overflow | LLM01: Prompt Injection | ASI-01: Agent Goal Hijacking | AML.T0051: LLM Prompt Injection |
 
 ---
@@ -639,7 +639,7 @@ standalone experiments.
 
 **Cross-agent trust:**
 
-- OWASP Agentic Top 10, ASI-07: Trust Boundary Violations
+- OWASP Agentic Top 10, ASI-07: Insecure Inter-Agent Communication
   <https://owasp.org/www-project-top-10-for-large-language-model-applications/>
 - AutoGPT architecture docs — how orchestrator-to-agent message passing works in practice
 
