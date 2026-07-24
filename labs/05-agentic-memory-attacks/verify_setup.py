@@ -2,7 +2,7 @@
 verify_setup.py — Pre-flight checks for the Agentic Memory Attacks lab.
 
 Validates:
-  1. LM Studio reachable at localhost:1234 with at least one model loaded
+  1. Local LLM endpoint reachable (Ollama :11434 by default, or LM Studio :1234 via LLM_BASE_URL) with at least one model loaded
   2. LLM inference produces a coherent response
   3. Memory store read/write round-trip
   4. Fixture files present
@@ -38,7 +38,7 @@ def check_lm_studio() -> bool:
     _header("Check 1 — LM Studio connectivity")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        client = OpenAI(base_url=os.getenv("LLM_BASE_URL", "http://localhost:11434/v1"), api_key="lm-studio")
         models = client.models.list()
         ids    = [m.id for m in models.data]
 
@@ -75,7 +75,7 @@ def check_inference() -> bool:
     _header("Check 2 — LLM inference (quick round-trip)")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        client = OpenAI(base_url=os.getenv("LLM_BASE_URL", "http://localhost:11434/v1"), api_key="lm-studio")
         models = client.models.list().data
         model  = models[0].id if models else "qwen2.5-7b-instruct"
 
@@ -102,7 +102,7 @@ def check_function_calling() -> bool:
     _header("Check 3 — Function calling (tool-use API)")
     try:
         from openai import OpenAI
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        client = OpenAI(base_url=os.getenv("LLM_BASE_URL", "http://localhost:11434/v1"), api_key="lm-studio")
         models = client.models.list().data
         model  = models[0].id if models else "qwen2.5-7b-instruct"
 

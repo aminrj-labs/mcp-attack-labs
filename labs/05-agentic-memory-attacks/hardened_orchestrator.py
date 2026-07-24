@@ -29,7 +29,7 @@ from defenses.context_freshness     import ContextFreshness
 from defenses.audit_log             import AuditLog
 
 # Context limit detection for ContextFreshness
-_LM_STUDIO_URL = "http://localhost:1234/v1"
+_LM_STUDIO_URL = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
 
 
 def _detect_context_limit() -> int:

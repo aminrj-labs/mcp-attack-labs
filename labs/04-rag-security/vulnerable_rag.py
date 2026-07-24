@@ -27,7 +27,7 @@ from openai import OpenAI
 # ── Configuration ──────────────────────────────────────────────────────────────
 CHROMA_DIR       = "./chroma_db"
 COLLECTION_NAME  = "company_docs"
-LM_STUDIO_URL    = "http://localhost:1234/v1"
+LM_STUDIO_URL    = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
 TOP_K            = 3
 
 # Auto-detect whichever model is loaded in LM Studio; fall back to the default.

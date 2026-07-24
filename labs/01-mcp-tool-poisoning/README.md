@@ -23,8 +23,11 @@ Turn 3  ←  "47 + 38 = 85"                                 # user sees only thi
 
 ## Prerequisites
 
-- Python 3.10+
-- [LM Studio](https://lmstudio.ai/) running a model susceptible to prompt injection (tested with `opengpt-oss`; small 7B models like `qwen2.5-7b` are typically not susceptible)
+- Python 3.11+
+- A local LLM endpoint (see [common prerequisites](../../README.md#prerequisites)) —
+  Ollama by default, or LM Studio via `LLM_BASE_URL`. Use a model susceptible to
+  prompt injection: `gpt-oss-20b` works well; small 7B models like `qwen2.5-7b` often
+  are **not** susceptible and will make the attack fail to reproduce.
 - Node.js (for the MCP filesystem server)
 
 ---

@@ -46,7 +46,9 @@ Attacker  ←  {"containers": "lab-cache\nlab-database\nlab-webserver"}
 ## Prerequisites
 
 - Python 3.11+
-- [LM Studio](https://lmstudio.ai/) running `qwen2.5-7b-instruct` (or compatible model)
+- A local LLM endpoint (see [common prerequisites](../../README.md#prerequisites)) —
+  Ollama by default, or LM Studio via `LLM_BASE_URL`. `qwen2.5-7b-instruct` or a
+  more capable model.
 - Docker (Rancher Desktop, Docker Desktop, or native)
 - `pip install mcp flask openai`
 
@@ -112,7 +114,6 @@ python3 agent.py gordon_simulator.py docker_mcp_server.py \
 | `exfil_server.py` | Flask HTTP receiver at `localhost:9999/exfil`. Simulates attacker's listening server. |
 | `rce-attack/Dockerfile` | Malicious image. Entire attack payload lives in `LABEL com.docker.image.description`. |
 | `blog-post.md` | Full write-up: all 6 payload iterations, failure analysis, two-threat-model breakdown, mitigations. |
-| `diagrams.md` | 8 Mermaid diagrams: architecture, kill chain sequence, payload state machine, threat model decision tree, and more. |
 | `lab-env.sh` | Helper script to start/stop the three victim containers. |
 
 ---

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -41,7 +42,7 @@ def check_lm_studio() -> bool:
     try:
         from openai import OpenAI
 
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        client = OpenAI(base_url=os.getenv("LLM_BASE_URL", "http://localhost:11434/v1"), api_key="lm-studio")
         model_ids = [model.id for model in client.models.list().data]
         if not model_ids:
             print(f"{FAIL} LM Studio is reachable but no models are loaded.")
@@ -61,7 +62,7 @@ def check_inference() -> bool:
     try:
         from openai import OpenAI
 
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        client = OpenAI(base_url=os.getenv("LLM_BASE_URL", "http://localhost:11434/v1"), api_key="lm-studio")
         models = [item.id for item in client.models.list().data]
         model = select_model(models)
 
@@ -87,7 +88,7 @@ def check_function_calling() -> bool:
     try:
         from openai import OpenAI
 
-        client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+        client = OpenAI(base_url=os.getenv("LLM_BASE_URL", "http://localhost:11434/v1"), api_key="lm-studio")
         models = [item.id for item in client.models.list().data]
         model = select_model(models)
 

@@ -2,7 +2,7 @@
 #
 # Requires:
 #   - Python 3.11+  virtual environment activated (source venv/bin/activate)
-#   - LM Studio serving an instruction-tuned model on localhost:1234
+#   - A local LLM endpoint (Ollama :11434 by default, or LM Studio :1234 via LLM_BASE_URL)
 
 .PHONY: help setup verify seed reset \
         attack1 attack2 attack3 attack4 attack-chain \

@@ -47,7 +47,7 @@ against a five-layer defense architecture, 100 % local — no cloud APIs require
 | Requirement | Notes |
 |---|---|
 | Python 3.11+ | |
-| [LM Studio](https://lmstudio.ai/) 0.3.x+ | Load `qwen2.5-7b-instruct` (Q4_K_M), enable server on port 1234 |
+| Local LLM endpoint | Ollama (`:11434`, default) or LM Studio (`:1234`, via `LLM_BASE_URL`) serving `qwen2.5-7b-instruct` (Q4_K_M). See [common prerequisites](../../README.md#prerequisites). |
 | ~6 GB RAM / VRAM | For the model |
 
 ---
@@ -62,8 +62,9 @@ cd labs/04-rag-security
 make setup
 source venv/bin/activate
 
-# 3. Start LM Studio and load qwen2.5-7b-instruct, then verify
-curl http://localhost:1234/v1/models
+# 3. Start your LLM backend and load qwen2.5-7b-instruct, then verify
+#    (Ollama default shown; for LM Studio use http://localhost:1234/v1/models)
+curl "${LLM_BASE_URL:-http://localhost:11434/v1}/models"
 
 # 4. Seed the knowledge base with legitimate company documents
 make seed

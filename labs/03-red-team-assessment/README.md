@@ -47,7 +47,9 @@ exploitation).
 ## Prerequisites
 
 - Python 3.11+
-- [LM Studio](https://lmstudio.ai/) running `qwen2.5-7b-instruct`
+- A local LLM endpoint (see [common prerequisites](../../README.md#prerequisites)) —
+  Ollama by default, or LM Studio via `LLM_BASE_URL` — running `qwen2.5-7b-instruct`
+  or a more capable model
 - Node.js 18+ (for Promptfoo)
 
 ---

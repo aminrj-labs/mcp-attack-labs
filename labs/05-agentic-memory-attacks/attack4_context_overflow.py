@@ -47,7 +47,7 @@ import time
 from openai import OpenAI
 
 _LAB_DIR      = os.path.dirname(os.path.abspath(__file__))
-LM_STUDIO_URL = "http://localhost:1234/v1"
+LM_STUDIO_URL = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
 
 SEP  = "=" * 64
 SEP2 = "-" * 64

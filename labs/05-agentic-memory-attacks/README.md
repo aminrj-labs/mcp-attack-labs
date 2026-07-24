@@ -72,8 +72,9 @@ Attacker pads context with 15–20 benign turns  →  System prompt moves deeper
 ## Prerequisites
 
 - Python 3.11 +
-- [LM Studio](https://lmstudio.ai/) with `qwen2.5-7b-instruct` (Q4_K_M recommended)
-- LM Studio server enabled on `localhost:1234`
+- A local LLM endpoint (see [common prerequisites](../../README.md#prerequisites)) —
+  Ollama on `:11434` by default, or LM Studio on `:1234` via `LLM_BASE_URL` — with
+  `qwen2.5-7b-instruct` (Q4_K_M recommended)
 - 8 GB RAM minimum (6 GB VRAM recommended)
 
 ---

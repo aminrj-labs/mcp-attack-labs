@@ -37,7 +37,7 @@ from defenses.embedding_anomaly_detection import gate_ingestion
 # ── Configuration ──────────────────────────────────────────────────────────────
 CHROMA_DIR      = "./chroma_db"
 COLLECTION_NAME = "company_docs"
-LM_STUDIO_URL   = "http://localhost:1234/v1"
+LM_STUDIO_URL   = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
 
 # Inherit the same model detection from vulnerable_rag so both pipelines stay in sync.
 from vulnerable_rag import MODEL

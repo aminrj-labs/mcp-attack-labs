@@ -34,7 +34,9 @@ User query
 ## Prerequisites
 
 - Python 3.11+
-- [LM Studio](https://lmstudio.ai/) serving any tool-capable instruction model on `http://localhost:1234/v1`
+- A local LLM endpoint (see [common prerequisites](../../README.md#prerequisites)) —
+  Ollama on `:11434` by default, or LM Studio on `:1234` via `LLM_BASE_URL` — serving
+  a tool-capable instruction model
 - A model with decent function-calling behavior. `qwen2.5-7b-instruct` is the baseline, but stronger local models usually comply more reliably.
 
 ---

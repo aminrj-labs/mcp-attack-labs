@@ -2,7 +2,7 @@
 verify_setup.py — Pre-flight checks for the RAG Security Lab.
 
 Validates:
-  1. LM Studio reachable at localhost:1234 and the expected model is loaded
+  1. Local LLM endpoint reachable (Ollama :11434 by default, or LM Studio :1234 via LLM_BASE_URL) and the expected model is loaded
   2. Embedding model (all-MiniLM-L6-v2) downloads and produces a valid vector
   3. ChromaDB can be created, written to, and queried
   4. Flask available (exfil server dependency)
@@ -12,6 +12,7 @@ Usage:
   make verify
 """
 
+import os
 import sys
 import time
 
@@ -67,7 +68,7 @@ def check_lm_studio() -> bool:
         return True
 
     except Exception as exc:
-        print(f"{FAIL} Cannot reach LM Studio at http://localhost:1234")
+        print(f"{FAIL} Cannot reach the local LLM endpoint at {os.getenv('LLM_BASE_URL', 'http://localhost:11434/v1')}")
         print(f"       Error: {exc}")
         print(
             f"       Fix:   Open LM Studio → load a model → enable server (port 1234)"
@@ -98,7 +99,7 @@ def check_lm_studio() -> bool:
         return True
 
     except Exception as exc:
-        print(f"{FAIL} Cannot reach LM Studio at http://localhost:1234")
+        print(f"{FAIL} Cannot reach the local LLM endpoint at {os.getenv('LLM_BASE_URL', 'http://localhost:11434/v1')}")
         print(f"       Error: {exc}")
         print(
             f"       Fix:   Open LM Studio → load a model → enable server (port 1234)"

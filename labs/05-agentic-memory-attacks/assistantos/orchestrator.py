@@ -29,7 +29,7 @@ from tools.file_tool import FileTool
 from tools.memory_tool import MemoryTool
 from tools.web_tool import WebTool
 
-LM_STUDIO_URL = "http://localhost:1234/v1"
+LM_STUDIO_URL = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
 
 _SYSTEM_PROMPT_TEMPLATE = """\
 You are AssistantOS, a personal assistant that helps users manage files,

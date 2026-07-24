@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import os
 import sys
 from contextlib import AsyncExitStack
 from pathlib import Path
@@ -12,7 +13,7 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from openai import OpenAI
 
-LM_STUDIO_BASE_URL = "http://localhost:1234/v1"
+LM_STUDIO_BASE_URL = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
 DEFAULT_MODEL = "qwen2.5-7b-instruct"
 DEFAULT_MAX_TURNS = 6
 DEFAULT_SYSTEM_PROMPT = (
