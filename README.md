@@ -15,8 +15,9 @@ no cloud APIs required.
 | 03 | [Red Team Assessment](./labs/03-red-team-assessment/) | Agentic AI pipeline | Automated red-teaming with PyRIT + Promptfoo → crescendo exfil + TAP tool abuse | Intermediate |
 | 04 | [RAG Security](./labs/04-rag-security/) | Knowledge / retrieval layer | Knowledge poisoning · indirect prompt injection · cross-tenant data leakage | Intermediate |
 | 05 | [Agentic Memory Attacks](./labs/05-agentic-memory-attacks/) | Agent memory & trust boundaries | Persistent memory poisoning · cross-agent trust exploitation · context overflow | Advanced |
+| 06 | [Cross-Server MCP Poisoning](./labs/06-ASI02-cross-server-mcp-poisoning/) | Multi-server MCP trust boundary | One malicious MCP server steers the agent into abusing another trusted server's tools | Intermediate |
 
-Each lab is self-contained: its own `README.md`, attack code, defense code, blog post, and Jupyter playbook.
+Each lab is self-contained: its own `README.md`, runnable code, and supporting write-up. Some labs also include defense code and Jupyter playbooks.
 
 ---
 
@@ -31,6 +32,7 @@ Each lab is self-contained: its own `README.md`, attack code, defense code, blog
 │  Lab 03: ──── Agent pipeline  (automated assessment)                 │
 │  Lab 04: ─────────────────────────────── RAG / vector DB             │
 │  Lab 05: ─────────────────────── Agent memory + multi-agent trust    │
+│  Lab 06: ───────────── Shared MCP tool context across trusted servers│
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -55,6 +57,7 @@ Lab-specific requirements (Docker, additional models, ports) are listed in each 
 | DockerDash: Supply Chain Prompt Injection | [Lab 02 →](./labs/02-docker-dash/) |
 | Red Teaming Agentic AI | [Lab 03 →](./labs/03-red-team-assessment/) |
 | RAG Security Architecture: The Attack Surface Hiding in Your Knowledge Base | [Lab 04 →](./labs/04-rag-security/) |
+| Cross-Server MCP Poisoning | [Lab 06 →](./labs/06-ASI02-cross-server-mcp-poisoning/) |
 
 ---
 

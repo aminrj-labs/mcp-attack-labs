@@ -9,7 +9,8 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 LM_STUDIO_BASE_URL = "http://localhost:1234/v1"
-MODEL = "qwen2.5-7b-instruct"  # match what LM Studio shows
+# MODEL = "qwen2.5-7b-instruct"  # match what LM Studio shows
+MODEL = "openai/gpt-oss-20b"  # match what LM Studio shows
 MAX_TURNS = 6  # limit agentic loops for demos
 
 llm = OpenAI(base_url=LM_STUDIO_BASE_URL, api_key="lm-studio")
@@ -98,6 +99,7 @@ async def run_agent(server_scripts: list[str], user_prompt: str):
                 messages=messages,
                 tools=api_tools,
                 tool_choice="auto",
+                temperature=0,
             )
             msg = response.choices[0].message
             messages.append(msg.model_dump())

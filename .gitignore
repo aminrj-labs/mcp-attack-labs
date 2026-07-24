@@ -19,3 +19,4 @@
 .vscode/
 .idea/
 /.claude
+/labs/04-rag-security/chroma_db
