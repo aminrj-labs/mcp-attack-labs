@@ -20,3 +20,7 @@
 .idea/
 /.claude
 /labs/04-rag-security/chroma_db
+
+# Lab runtime artifacts (regenerated on each run; not source)
+**/whatsapp_stub.log
+**/venv/
