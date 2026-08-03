@@ -56,18 +56,19 @@ and understand the controls that defeat them.
 | 04 | [RAG Security](./labs/04-rag-security/) | Knowledge-base poisoning · indirect prompt injection · cross-tenant data leakage | ✅ Complete |
 | 05 | [Agentic Memory Attacks](./labs/05-agentic-memory-attacks/) | Persistent memory poisoning · cross-agent trust abuse · context-window overflow | ✅ Complete |
 | 06 | [Cross-Server MCP Poisoning](./labs/06-ASI02-cross-server-mcp-poisoning/) | One malicious MCP server steers the agent into abusing a second, trusted server | ✅ Complete |
-| 07 | [MCP → A2A Kill Chain](./labs/07-mcp-to-a2a-kill-chain/) | Five-stage chain: tool poisoning → rogue A2A agent registration → routing hijack → lateral movement → persistence after server removal | 🔨 In development |
+| 07 | [**MCP → A2A Kill Chain**](./labs/07-mcp-to-a2a-kill-chain/) | **Flagship.** Five-stage chain across the MCP→A2A trust boundary: tool poisoning → rogue A2A registration → routing hijack → lateral movement → persistence after server removal. Each of three controls provably breaks it at a specific stage. | ✅ Complete |
 
 **Status legend:** ✅ Complete & runnable · 🚧 Work in progress (partial) · 🔨 In
 active development · 🗓 Planned. Status is stated honestly at the top of each
 lab's README, and per-stage where a lab is multi-stage. Nothing here is presented
 as working unless it runs.
 
-> **On the five-stage kill chain (Lab 07):** this is being built stage by stage.
-> Each stage is labeled by status inside the lab — implemented stages are runnable
-> and demonstrated; stages still in design say so plainly. Labs 01, 01b and 06
-> already demonstrate the tool-description-poisoning primitive the chain starts
-> from.
+> **Start with the flagship (Lab 07).** It runs end to end on the standard
+> library alone — `cd labs/07-mcp-to-a2a-kill-chain && python3 run_chain.py` —
+> and is the one lab where you can watch a single control break the whole chain:
+> `python3 run_chain.py --defended`. It carries the tool-description-poisoning
+> primitive from Labs 01 and 06 across the agent-to-agent trust boundary, which
+> is where the A2A protocol hands the trust decisions to the implementer.
 
 ---
 
