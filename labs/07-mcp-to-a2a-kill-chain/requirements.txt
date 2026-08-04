@@ -1,0 +1,6 @@
+# Lab 07 runs on the standard library alone.
+# Only needed for the optional --llm mode (Stage 1 against a real local model):
+openai>=1.0 ; extra == "llm"
+
+# For the tests:
+pytest>=8.0
